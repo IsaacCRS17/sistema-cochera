@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/vehicle_type', 'App\Http\Controllers\vehicle_typeController@index'); //list
+Route::post('/vehicle_type', 'App\Http\Controllers\vehicle_typeController@store'); //add
+Route::put('/vehicle_type/{id}', 'App\Http\Controllers\vehicle_typeController@update'); //update
+Route::delete('/vehicle_type/{id}', 'App\Http\Controllers\vehicle_typeController@destroy'); //update

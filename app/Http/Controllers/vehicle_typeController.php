@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\vehicle_type;
+use App\Models\vehicle_types;
 
 class vehicle_typeController extends Controller
 {
@@ -14,7 +14,8 @@ class vehicle_typeController extends Controller
      */
     public function index()
     {
-        //
+        $vehicles_type = vehicle_types::all();
+        return $vehicles_type;
     }
 
     /**
@@ -35,7 +36,10 @@ class vehicle_typeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $vehicle_type = new vehicle_types();
+        $vehicle_type->type = $request->type;
+
+        $vehicle_type->save();
     }
 
     /**
@@ -67,9 +71,13 @@ class vehicle_typeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $vehicle_type = vehicle_types::findOrFail($request->id);
+        $vehicle_type->type = $request->type;
+
+        $vehicle_type->save();
+        return $vehicle_type;
     }
 
     /**
@@ -78,8 +86,9 @@ class vehicle_typeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $vehicle_type = vehicle_types::destroy($request->id);
+        return $vehicle_type;
     }
 }
