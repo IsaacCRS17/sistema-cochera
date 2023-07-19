@@ -14,9 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedInteger('id')->autoIncrement();
             $table->string('model');
             $table->string('placa');
+            $table->enum('state', ['ACTIVE', 'DELETE'])->default('ACTIVE');
+
+            $table->integer('vehicletype_id')->unsigned();
+            $table->foreign('vehicletype_id')->references('id')->on('vehicle_types');
+
             $table->timestamps();
         });
     }

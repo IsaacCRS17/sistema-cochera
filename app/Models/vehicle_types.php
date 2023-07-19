@@ -9,4 +9,10 @@ class vehicle_types extends Model
 {
     use HasFactory;
     protected $fillable = ['type'];
+
+    public function getVehicles()
+    {
+        return $this->hasMany(vehicles::class, 'vehicletype_id','id')
+        ->where('state','ACTIVE');
+    }
 }
