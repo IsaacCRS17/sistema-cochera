@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\VehicleSaveRequest;
+use App\Http\Requests\VehicleUpdateRequest;
+use App\Http\Resources\VehicleResource;
 use Illuminate\Http\Request;
 use App\Models\vehicles;
+
 class vehicleController extends Controller
 {
     /**
@@ -13,8 +16,8 @@ class vehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = vehicles::all();
-        return $vehicles;
+        $result = vehicles::where('state', 'ACTIVE')->get();
+        return VehicleResource::collection( $result);
     }
 
     /**
@@ -33,13 +36,11 @@ class vehicleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VehicleSaveRequest $request)
     {
-        $vehicle = new vehicles();
-        $vehicle->model = $request->model;
-        $vehicle->placa = $request->placa;
+        $vehicles = vehicles::create($request->all());
 
-        $vehicle->save();
+        return new VehicleResource($vehicles);
     }
 
     /**
@@ -68,28 +69,24 @@ class vehicleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\vehicles $vehicle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(VehicleUpdateRequest $request,vehicles $vehicle)
     {
-        $vehicle = vehicles::findOrFail($request->id);
-        $vehicle->model = $request->model;
-        $vehicle->placa = $request->placa;
-
-        $vehicle->save();
-        return $vehicle;
+        $vehicle->update($request->all());
+        return new VehicleResource($vehicle);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\vehicles $vehicle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(vehicles $vehicle)
     {
-        $vehicle = vehicles::destroy($request->id);
-        return $vehicle;
+        if($vehicle) $vehicle->update(['state' => 'DELETE']);
+        return response()->noContent();
     }
 }

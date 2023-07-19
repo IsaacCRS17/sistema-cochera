@@ -13,7 +13,7 @@ class VehicleSaveRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class VehicleSaveRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "model" => "required",
+            "placa" => "required",
+            "vehicletype_id" => "required|exists:vehicle_types,id"
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            "model" => "modelo",
+            "placa" => "placa",
+            "vehicletype_id" => "Tipo de Vehiculo"
         ];
     }
 }

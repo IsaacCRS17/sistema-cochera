@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class vehicle_types extends Model
 {
     use HasFactory;
-    protected $fillable = ['type'];
+    protected $fillable = ['type', 'state'];
 
     public function getVehicles()
     {
