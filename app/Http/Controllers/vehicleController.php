@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\VehicleSaveRequest;
+use App\Http\Requests\VehicleUpdateRequest;
+use App\Http\Resources\VehicleResource;
 use Illuminate\Http\Request;
-use App\Models\vehicle_types;
-use App\Http\Resources\VehicleTypeResource;
-use App\Http\Requests\VehicleTypeSaveRequest;
-use App\Http\Requests\VehicleTypeUpdateRequest;
-class vehicle_typeController extends Controller
+use App\Models\vehicles;
+
+class vehicleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class vehicle_typeController extends Controller
      */
     public function index()
     {
-        $vehicles_type = vehicle_types::where('state', 'ACTIVE')->with('getVehicles')->get();
-        return VehicleTypeResource::collection($vehicles_type);
+        $result = vehicles::where('state', 'ACTIVE')->get();
+        return VehicleResource::collection( $result);
     }
 
     /**
@@ -35,12 +35,12 @@ class vehicle_typeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     *
      */
-    public function store(VehicleTypeSaveRequest $request)
+    public function store(VehicleSaveRequest $request)
     {
-        $vehicle_type = vehicle_types::create($request->all());
-        return new VehicleTypeResource($request);
+        $vehicles = vehicles::create($request->all());
+
+        return new VehicleResource($vehicles);
     }
 
     /**
@@ -69,24 +69,24 @@ class vehicle_typeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\vehicle_types $vehicle_types
+     * @param  \App\Models\vehicles $vehicle
      * @return \Illuminate\Http\Response
      */
-    public function update(VehicleTypeUpdateRequest $request, vehicle_types $vehicle_type)
+    public function update(VehicleUpdateRequest $request,vehicles $vehicle)
     {
-        $vehicle_type->update($request->all());
-        return new VehicleTypeResource($vehicle_type);
+        $vehicle->update($request->all());
+        return new VehicleResource($vehicle);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\vehicle_types $vehicle_type
+     * @param  \App\Models\vehicles $vehicle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(vehicle_types $vehicle_type)
+    public function destroy(vehicles $vehicle)
     {
-        if($vehicle_type) $vehicle_type->update(['state' => 'DELETE']);
+        if($vehicle) $vehicle->update(['state' => 'DELETE']);
         return response()->noContent();
     }
 }
