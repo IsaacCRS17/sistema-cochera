@@ -26,7 +26,8 @@ class VehicleUpdateRequest extends FormRequest
         return [
             "model" => "required",
             "placa" => "required",
-            "vehicletype_id" => "exists:vehicle_types,id"
+            "vehicletype_id" => "exists:vehicle_types,id",
+            "personas_id" => "exists:personas,id"
         ];
     }
 
@@ -35,7 +36,8 @@ class VehicleUpdateRequest extends FormRequest
         return [
             "model" => "modelo",
             "placa" => "placa",
-            "vehicletype_id" => "Tipo de vehículo"
+            "vehicletype_id" => "Tipo de vehículo",
+            "personas_id" => "Personas"
         ];
     }
 }
