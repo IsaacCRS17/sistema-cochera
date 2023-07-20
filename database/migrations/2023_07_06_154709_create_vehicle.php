@@ -22,6 +22,9 @@ return new class extends Migration
             $table->integer('vehicletype_id')->unsigned();
             $table->foreign('vehicletype_id')->references('id')->on('vehicle_types');
 
+            $table->integer('personas_id')->unsigned();
+            $table->foreign('personas_id')->references('id')->on('personas');
+
             $table->timestamps();
         });
     }
