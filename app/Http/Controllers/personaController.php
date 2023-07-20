@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\persona;
+use App\Models\personas;
 class personaController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class personaController extends Controller
      */
     public function index()
     {
-        $personas= persona::all();
+        $personas= personas::all();
         return $personas;
     }
 
@@ -36,7 +36,7 @@ class personaController extends Controller
      */
     public function store(Request $request)
     {
-        $persona=new persona();
+        $persona=new personas();
         $persona->name=$request->name;
         $persona->dni=$request->dni;
 
@@ -76,7 +76,7 @@ class personaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $persona= Persona::findOrFail($request->id);
+        $persona= personas::findOrFail($request->id);
         $persona->name=$request->name;
         $persona->dni=$request->dni;
 
@@ -92,7 +92,7 @@ class personaController extends Controller
      */
     public function destroy(Request $request)
     {
-        $persona=Persona::destroy($request->id);
+        $persona=personas::destroy($request->id);
         $persona->name=$request->name;
         $persona->dni=$request->dni;
 
