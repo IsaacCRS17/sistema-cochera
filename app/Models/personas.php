@@ -12,7 +12,7 @@ class personas extends Model
     
     public function getVehicles()
     {
-        return $this->hasMany(vehicles::class, 'vehicletype_id','id')
+        return $this->hasMany(vehicles::class, 'personas_id','id')
         ->where('state','ACTIVE');
     }
 }

@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('personas', function (Blueprint $table) {
-            $table->id()->autoIncrement();
+            $table->unsignedInteger('id')->autoIncrement();
             $table->string('name');
             $table->string('dni');
-            $table->enum('state',['ACTIVATE','DELETE'])->default('activate');
+            $table->enum('state',['ACTIVE','DELETE'])->default('ACTIVE');
             $table->timestamps();
         });
     }

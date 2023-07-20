@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\personas;
+use App\Http\Resources\PersonasResource;
+use App\Http\Requests\PersonasSaveRequest;
+use App\Http\Requests\PersonasUpdateRequest;
+
 class personaController extends Controller
 {
     /**
@@ -13,8 +17,8 @@ class personaController extends Controller
      */
     public function index()
     {
-        $personas= personas::all();
-        return $personas;
+        $personas= personas::where('state','ACTIVE')->with('getVehicles')->get();
+        return PersonasResource::collection($personas);
     }
 
     /**
@@ -34,14 +38,12 @@ class personaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonasSaveRequest $request)
     {
-        $persona=new personas();
-        $persona->name=$request->name;
-        $persona->dni=$request->dni;
+        
+        $persona=personas::create($request->all());
 
-        $persona->save();
-        return $persona;
+      return new PersonasResource($request);
 
     }
 
@@ -71,32 +73,24 @@ class personaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\personas $personas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PersonasUpdateRequest $request, personas $persona)
     {
-        $persona= personas::findOrFail($request->id);
-        $persona->name=$request->name;
-        $persona->dni=$request->dni;
-
-        $persona->save();
-        return $persona;
+       $persona->update($request->all());
+       return new PersonasResource($persona);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\personas  $personas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(personas $persona)
     {
-        $persona=personas::destroy($request->id);
-        $persona->name=$request->name;
-        $persona->dni=$request->dni;
-
-        $persona->save();
-        return $persona;
+        if($persona) $persona->update(['state'=>'DELETE']);
+        return response()->noContent();
     }
 }

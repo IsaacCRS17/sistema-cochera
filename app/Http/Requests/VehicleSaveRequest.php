@@ -26,7 +26,8 @@ class VehicleSaveRequest extends FormRequest
         return [
             "model" => "required",
             "placa" => "required",
-            "vehicletype_id" => "required|exists:vehicle_types,id"
+            "vehicletype_id" => "required|exists:vehicle_types,id",
+            "personas_id" => "required|exists:personas,id"
         ];
     }
 
@@ -35,7 +36,8 @@ class VehicleSaveRequest extends FormRequest
         return [
             "model" => "modelo",
             "placa" => "placa",
-            "vehicletype_id" => "Tipo de Vehiculo"
+            "vehicletype_id" => "Tipo de Vehiculo",
+            "personas_id" => "Personas"
         ];
     }
 }
